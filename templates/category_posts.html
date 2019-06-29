@@ -1,0 +1,118 @@
+{% extends "base.html"%}
+{% load static %}
+  
+  {% block content %}    
+   <!-- start container content -->
+    <div class="container">
+      <div class="row">
+        <!-- Latest Posts -->
+        <main class="posts-listing col-lg-8">
+
+          <div class="container">
+              <div>
+                <h1 class="mb-5">{{ category.title}}</h1>
+              </div>
+              <p mb-1>LATEST CONTENT</p>
+            <div class="row">
+              <!-- start post -->
+              {% for post in category_posts %}
+              <div class="post col-xl-6">
+                {% load thumbnail %}
+              {% thumbnail post.image "350x260" crop="center" as im %}
+              <a href="{{ post.get_absolute_url }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
+            {% endthumbnail %}
+                <!-- <div class="post-thumbnail"><a href="{{ post.get_absolute_url }}"><img src="{{ post.image.url }}" alt="..." class="img-fluid"></a></div> -->
+                <div class="post-details">
+                  <div class="post-meta d-flex justify-content-between">
+                    <div class="date meta-last">{{ post.timestamp|date:"d"}}  {{ post.timestamp|date:"M"}} | {{ post.timestamp|date:"Y"}} {{ post.timestamp|date:"f"}}{{ post.timestamp|date:"A"}}</div>
+                    <div class="category">
+                      {% for cat in post.category.all %}
+                      <a href="#">{{ cat }}</a>
+                      {% endfor %}
+
+                    </div>
+                    
+                      
+                  </div><a href="{{ post.get_absolute_url }}">
+                    <h3 class="h4">{{ post.title }}</h3></a>
+                  <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                  <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+                      <div class="avatar"><img src="{{ post.author.profile_picture.url}}" alt="..." class="img-fluid"></div>
+                      <div class="title"><span>{{ post.author }}</span></div></a>
+                    <div class="date"><i class="icon-clrock"></i>{{ post.timestamp|timesince}} ago</div>
+                    <div class="comments meta-last"><i class="icon-comment"></i>{{ post.get_post_comments.count }}</div>
+                  </footer>
+                </div>
+              </div>
+            
+            {% endfor %}
+              <!-- end post             -->
+            </div>
+              
+            <!-- Pagination -->
+            <nav aria-label="Page navigation example">
+              <ul class="pagination pagination-template d-flex justify-content-center">
+                {% if post_list.has_previous %}
+                <li class="page-item"><a href="?page={{ post_list.previous_page_number}}" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
+                {% endif %}
+                
+                
+                {% for i in post_list.paginator.page_range %}
+                    {% if post_lists.number == i %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %} 
+
+
+                {% if post_list.has_next %}
+                <li class="page-item"><a href="?page={{ post_list.next_page_number}}" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
+                {% endif %}
+              </ul>
+            </nav>
+            <!-- end pagination -->
+          
+          </div>
+        </main>
+        <!-- sidebar for category and tagsa -->
+        <aside class="col-lg-4">
+          <div class="widget simple-ads">
+            <p>HERE IS ADS</p>
+          </div>
+          <!-- Widget [Categories Widget]-->
+          <div class="widget categories">
+            <header>
+              <h3 class="h6">Categories</h3>
+            </header>
+            {% for cat in categories%}
+            <div class="item d-flex justify-content-between"><a href="{% url 'category_posts' cat.slug %}">{{ cat.title }}
+            </a><span>{{ cat.posts.count }}</span></div>
+            {% endfor %}
+          </div>
+          <!-- Widget [Tags Cloud Widget]-->
+          <div class="widget tags">       
+            <header>
+              <h3 class="h6">Tags</h3>
+              
+            
+            
+              
+            </header>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a href="#" class="tag">#Business</a></li>
+              <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
+              <li class="list-inline-item"><a href="#" class="tag">#Fashion</a></li>
+              <li class="list-inline-item"><a href="#" class="tag">#Sports</a></li>
+              <li class="list-inline-item"><a href="#" class="tag">#Economy</a></li>
+            </ul>
+          </div>
+        </aside>
+
+
+
+
+      </div>
+    </div>
+    <!-- end container content -->
+    {% endblock %}

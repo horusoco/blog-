@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+<h1> Search results </h1>
+<h2> you search "{{ query }}"</h2>
+
+
+
+{% block content %}
+
+<section class="latest-posts"> 
+      <div class="container">
+        <div class="row">
+        <div class="col-md-8">
+		<h3>Your results search "{{ query }}"</h3>
+          {% for post in posts %}
+           <div class="col-md-8">
+
+            <div class="post-thumbnail">
+            	
+              <a href="{{ post.get_absolute_url}} "><img src="{{ post.image.url }}" alt="..." class="img-fluid"></a>
+				
+            </div>
+            <div class="post-details">
+              <div class="post-meta d-flex justify-content-between">
+                <div class="date">{{ post.timestamp|date:"d"}}  {{ post.timestamp|date:"M"}} | {{ post.timestamp|date:"Y"}}</div>
+                <div class="category">
+                  {% for cat in obj.category.all %}
+                  <a href="#">{{ cat }}</a>
+                  {% endfor %}
+                  </div>
+              </div><a href="#">
+                <h3 class="h4">{{ post.title }}</h3></a>
+              <p class="text-muted">{{ post.overview|linebreaks|truncatewords:17}}</p>
+            </div>
+          </div>
+
+          {% endfor %}
+          </div>
+				
+
+		<aside class="col-lg-4">
+          
+          <!-- Widget [Latest Posts Widget]        -->
+          <div class="widget latest-posts">
+            <header>
+              <h3 class="h6">Latest Posts</h3>
+            </header>
+            {% for post in post_recent %}
+           
+            <div class="blog-posts"><a href="#">
+                <div class="item d-flex align-items-center">
+                  <div class="image"><img src="{{ post.image.url }}" alt="..." class="img-fluid" ></div>
+                  <div class="title"><strong>{{ post.title }}</strong>
+                    <div class="d-flex align-items-center">
+                      <div class="views"><i class="icon-eye"></i>{{ post.post_view_count }}</div>
+                      <div class="comments"><i class="icon-comment"></i>{{ post.get_post_comments.count }}</div>
+                    </div>
+                  </div>
+                </div></a>
+            </div>
+            {% endfor %}
+		 </div>    
+        
+        </aside>
+
+         </div>
+      </div>
+    </section>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
